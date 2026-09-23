@@ -8,21 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const navToggle = document.getElementById('nav-toggle');
     const navMenu = document.getElementById('nav-menu');
     const navLinks = document.querySelectorAll('.nav-link');
+    const header = document.getElementById('site-header');
 
     if (navToggle && navMenu) {
         navToggle.addEventListener('click', () => {
             const isOpen = navMenu.classList.toggle('nav-open');
             navToggle.setAttribute('aria-expanded', isOpen.toString());
-        });
-
-        // Close menu when clicking a link
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                if (navMenu.classList.contains('nav-open')) {
-                    navMenu.classList.remove('nav-open');
-                    navToggle.setAttribute('aria-expanded', 'false');
-                }
-            });
         });
 
         // Close menu when clicking outside
@@ -34,16 +25,51 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Smooth Scrolling Between Navigation Sections with Header Offset ---
+    const internalLinks = document.querySelectorAll('a[href^="#"]');
+    internalLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            if (!href || href === '#') return;
+            const targetId = href.substring(1);
+            const targetEl = document.getElementById(targetId);
+
+            if (targetEl) {
+                e.preventDefault();
+
+                // Close mobile menu if open
+                if (navMenu && navMenu.classList.contains('nav-open')) {
+                    navMenu.classList.remove('nav-open');
+                    navToggle?.setAttribute('aria-expanded', 'false');
+                }
+
+                const headerHeight = header?.offsetHeight || 70;
+                const elementPosition = targetEl.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - (headerHeight + 12);
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+
+                // Update URL hash cleanly
+                if (history.pushState) {
+                    history.pushState(null, null, href);
+                }
+            }
+        });
+    });
+
     // --- Active Link Highlighting On Scroll ---
     const sections = document.querySelectorAll('section[id]');
 
     function highlightNavOnScroll() {
         const scrollY = window.pageYOffset;
-        const headerHeight = document.getElementById('site-header')?.offsetHeight || 70;
+        const headerHeight = header?.offsetHeight || 70;
 
         sections.forEach(current => {
             const sectionHeight = current.offsetHeight;
-            const sectionTop = current.offsetTop - headerHeight - 30;
+            const sectionTop = current.offsetTop - headerHeight - 50;
             const sectionId = current.getAttribute('id');
             const correspondingLink = document.querySelector(`.nav-link[href*="${sectionId}"]`);
 
@@ -61,7 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
     highlightNavOnScroll(); // Trigger on initial load
 
     // --- Header Shadow on Scroll ---
-    const header = document.getElementById('site-header');
     function checkHeaderScroll() {
         if (window.scrollY > 20) {
             header?.classList.add('scrolled');
@@ -71,4 +96,51 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.addEventListener('scroll', checkHeaderScroll, { passive: true });
     checkHeaderScroll();
+
+    // --- Professional Subtle Section & Card Reveal Animations ---
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReducedMotion && 'IntersectionObserver' in window) {
+        // Collect key cards and sections for smooth entrance reveals
+        const revealTargets = document.querySelectorAll(
+            '.metrics-grid > .metric-card, .abis-container, .timeline-card, .project-card, .skill-category-card, .education-card, .principles-card, .contact-box'
+        );
+
+        // Add reveal-item class dynamically
+        revealTargets.forEach(el => {
+            el.classList.add('reveal-item');
+        });
+
+        // Add subtle staggered delays for items within grids
+        const gridContainers = document.querySelectorAll('.metrics-grid, .projects-grid, .skills-grid, .contact-links-grid');
+        gridContainers.forEach(grid => {
+            const items = grid.querySelectorAll('.reveal-item');
+            items.forEach((item, idx) => {
+                item.style.transitionDelay = `${idx * 60}ms`;
+            });
+        });
+
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-revealed');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            root: null,
+            threshold: 0.08,
+            rootMargin: '0px 0px -30px 0px'
+        });
+
+        revealTargets.forEach(el => {
+            // If already inside the visible viewport on initial load, reveal immediately
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                el.classList.add('is-revealed');
+            } else {
+                revealObserver.observe(el);
+            }
+        });
+    }
 });
