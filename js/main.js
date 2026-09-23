@@ -43,16 +43,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     navToggle?.setAttribute('aria-expanded', 'false');
                 }
 
-                const headerHeight = header?.offsetHeight || 70;
+                const headerHeight = header?.offsetHeight || 64;
                 const elementPosition = targetEl.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - (headerHeight + 12);
+                const offsetPosition = elementPosition + window.pageYOffset - (headerHeight + 10);
 
                 window.scrollTo({
                     top: offsetPosition,
                     behavior: 'smooth'
                 });
 
-                // Update URL hash cleanly
+                // Immediate active link feedback
+                navLinks.forEach(l => l.classList.remove('active'));
+                const matchedNav = document.querySelector(`.nav-link[href*="${targetId}"]`);
+                if (matchedNav) matchedNav.classList.add('active');
+
+                // Update URL hash cleanly without instant jump
                 if (history.pushState) {
                     history.pushState(null, null, href);
                 }
@@ -65,11 +70,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function highlightNavOnScroll() {
         const scrollY = window.pageYOffset;
-        const headerHeight = header?.offsetHeight || 70;
+        const headerHeight = header?.offsetHeight || 64;
 
         sections.forEach(current => {
             const sectionHeight = current.offsetHeight;
-            const sectionTop = current.offsetTop - headerHeight - 50;
+            const sectionTop = current.offsetTop - headerHeight - 45;
             const sectionId = current.getAttribute('id');
             const correspondingLink = document.querySelector(`.nav-link[href*="${sectionId}"]`);
 
@@ -88,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Header Shadow on Scroll ---
     function checkHeaderScroll() {
-        if (window.scrollY > 20) {
+        if (window.scrollY > 15) {
             header?.classList.add('scrolled');
         } else {
             header?.classList.remove('scrolled');
@@ -116,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gridContainers.forEach(grid => {
             const items = grid.querySelectorAll('.reveal-item');
             items.forEach((item, idx) => {
-                item.style.transitionDelay = `${idx * 60}ms`;
+                item.style.transitionDelay = `${idx * 50}ms`;
             });
         });
 
@@ -129,8 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }, {
             root: null,
-            threshold: 0.08,
-            rootMargin: '0px 0px -30px 0px'
+            threshold: 0.06,
+            rootMargin: '0px 0px -25px 0px'
         });
 
         revealTargets.forEach(el => {
