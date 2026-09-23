@@ -70,13 +70,13 @@ body {
     overflow-x: hidden;
 }
 
-/* Skip link for keyboard accessibility */
+/* Accessible Skip Link */
 .skip-link {
     position: absolute;
     top: -100px;
     left: 1rem;
     background: var(--color-primary);
-    color: #fff;
+    color: #ffffff;
     padding: 0.5rem 1rem;
     z-index: 10000;
     font-weight: 600;
@@ -85,6 +85,12 @@ body {
 }
 .skip-link:focus {
     top: 1rem;
+}
+
+/* Accessible Focus States */
+:focus-visible {
+    outline: 2px solid var(--color-cyan);
+    outline-offset: 3px;
 }
 
 a {
@@ -132,7 +138,7 @@ code {
     font-family: var(--font-mono);
     font-size: 0.8125rem;
     font-weight: 600;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-cyan);
     margin-bottom: 0.5rem;
@@ -140,7 +146,7 @@ code {
 
 .section-title {
     font-size: clamp(1.85rem, 3.5vw, 2.5rem);
-    font-weight: 700;
+    font-weight: 800;
     color: var(--text-main);
     letter-spacing: -0.025em;
     line-height: 1.25;
@@ -169,6 +175,7 @@ code {
     border: 1px solid transparent;
     transition: all 0.2s var(--ease-out);
     white-space: nowrap;
+    min-height: 44px;
 }
 
 .btn-primary {
@@ -216,6 +223,7 @@ code {
 .btn-sm {
     padding: 0.45rem 0.9rem;
     font-size: 0.84rem;
+    min-height: 36px;
 }
 
 /* --- SITE HEADER & NAVIGATION --- */
@@ -228,6 +236,11 @@ code {
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border-subtle);
+    transition: box-shadow 0.2s ease;
+}
+
+.site-header.scrolled {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .header-inner {
@@ -279,13 +292,13 @@ code {
 .nav {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 1.75rem;
 }
 
 .nav-list {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1.35rem;
 }
 
 .nav-link {
@@ -293,7 +306,7 @@ code {
     font-weight: 500;
     color: var(--text-muted);
     position: relative;
-    padding: 0.25rem 0;
+    padding: 0.35rem 0;
 }
 .nav-link:hover, .nav-link.active {
     color: var(--text-main);
@@ -314,8 +327,8 @@ code {
     flex-direction: column;
     justify-content: center;
     gap: 5px;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.75rem;
+    height: 2.75rem;
     background: transparent;
     border: none;
     cursor: pointer;
@@ -355,7 +368,7 @@ code {
     border: 1px solid rgba(16, 185, 129, 0.3);
     padding: 0.35rem 0.85rem;
     border-radius: 999px;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
 }
 
 .status-dot {
@@ -379,13 +392,22 @@ code {
     color: #34d399;
 }
 
+.hero-intro-label {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--color-cyan);
+    margin-bottom: 0.35rem;
+}
+
 .hero-title {
-    font-size: clamp(2.25rem, 4.5vw, 3.4rem);
+    font-size: clamp(2.5rem, 5vw, 3.8rem);
     font-weight: 800;
     color: var(--text-main);
     letter-spacing: -0.03em;
-    line-height: 1.15;
-    margin-bottom: 1.5rem;
+    line-height: 1.1;
+    margin-bottom: 1.35rem;
 }
 
 .hero-lede {
@@ -405,8 +427,8 @@ code {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 2.5rem;
+    gap: 0.85rem;
+    margin-bottom: 2.25rem;
 }
 
 .icon-arrow {
@@ -491,7 +513,11 @@ code {
     color: var(--color-cyan);
 }
 
-/* --- METRICS GRID --- */
+/* --- 4-COLUMN IMPACT & METRICS SECTION --- */
+.metrics-section {
+    background: linear-gradient(180deg, var(--bg-base) 0%, rgba(14, 22, 40, 0.3) 100%);
+}
+
 .metrics-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -504,8 +530,8 @@ code {
     border-radius: var(--radius-md);
     padding: 1.75rem 1.5rem;
     box-shadow: var(--shadow-card);
-    position: relative;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
     transition: transform 0.2s var(--ease-out), border-color 0.2s ease;
 }
 .metric-card:hover {
@@ -518,18 +544,12 @@ code {
     background: radial-gradient(circle at 100% 0%, rgba(59, 130, 246, 0.12), transparent 60%), var(--bg-surface);
 }
 
-.metric-icon {
-    width: 2.25rem;
-    height: 2.25rem;
+.metric-header {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-cyan);
-    margin-bottom: 1rem;
-}
-.metric-icon svg {
-    width: 100%;
-    height: 100%;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .metric-number {
@@ -538,12 +558,28 @@ code {
     color: var(--text-main);
     letter-spacing: -0.02em;
     line-height: 1.2;
-    margin-bottom: 0.35rem;
+}
+
+.metric-tag {
+    font-size: 0.7rem;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-faint);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+}
+
+.metric-tag.system-tag {
+    color: var(--color-cyan);
+    background: var(--color-cyan-soft);
+    border: 1px solid rgba(56, 189, 248, 0.3);
 }
 
 .metric-title {
     font-size: 0.9375rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-main);
     margin-bottom: 0.65rem;
 }
@@ -551,15 +587,16 @@ code {
 .metric-desc {
     font-size: 0.875rem;
     color: var(--text-muted);
-    line-height: 1.55;
+    line-height: 1.6;
+    margin-top: auto;
 }
 
-/* --- FLAGSHIP CASE STUDY: ABIS --- */
-.case-study-section {
-    background: linear-gradient(180deg, var(--bg-base) 0%, rgba(14, 22, 40, 0.4) 50%, var(--bg-base) 100%);
+/* --- TECHO STUDIOS / ABIS SHOWCASE --- */
+.abis-section {
+    background: linear-gradient(180deg, var(--bg-base) 0%, rgba(14, 22, 40, 0.5) 50%, var(--bg-base) 100%);
 }
 
-.case-study-banner {
+.abis-container {
     background: var(--bg-surface);
     border: 1px solid var(--border-accent);
     border-radius: var(--radius-xl);
@@ -569,7 +606,7 @@ code {
     overflow: hidden;
 }
 
-.case-study-banner::before {
+.abis-container::before {
     content: '';
     position: absolute;
     top: 0;
@@ -580,16 +617,15 @@ code {
     pointer-events: none;
 }
 
-.case-study-kicker {
+.abis-subhead {
+    font-size: 0.875rem;
     font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
     color: var(--color-cyan);
-    margin-bottom: 0.85rem;
+    display: block;
+    margin-bottom: 0.25rem;
 }
 
-.case-study-header {
+.abis-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -599,7 +635,7 @@ code {
     margin-bottom: 2.25rem;
 }
 
-.case-study-title {
+.abis-title {
     font-size: clamp(1.6rem, 2.8vw, 2.2rem);
     font-weight: 800;
     color: var(--text-main);
@@ -608,27 +644,28 @@ code {
     margin-bottom: 0.5rem;
 }
 
-.case-study-meta {
+.abis-context {
     font-size: 0.9375rem;
     color: var(--text-muted);
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
 }
+
 .bullet {
     color: var(--text-faint);
 }
 
-.case-study-badge {
-    background: rgba(37, 99, 235, 0.15);
+.abis-throughput-card {
+    background: rgba(37, 99, 235, 0.12);
     border: 1px solid var(--color-primary);
     border-radius: var(--radius-md);
-    padding: 0.65rem 1.15rem;
+    padding: 0.85rem 1.25rem;
     text-align: right;
     flex-shrink: 0;
 }
 
-.badge-label {
+.throughput-label {
     display: block;
     font-size: 0.72rem;
     font-family: var(--font-mono);
@@ -637,70 +674,126 @@ code {
     letter-spacing: 0.08em;
 }
 
-.badge-value {
-    font-size: 1.15rem;
+.throughput-value {
+    font-size: 1.3rem;
     font-weight: 800;
     color: #ffffff;
     letter-spacing: -0.01em;
+    display: block;
+    line-height: 1.2;
+    margin: 0.15rem 0;
 }
 
-.case-study-body {
+.throughput-sub {
+    font-size: 0.75rem;
+    color: var(--text-faint);
+}
+
+/* Architecture Grid */
+.architecture-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2.5rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
     margin-bottom: 2.25rem;
 }
 
-.case-study-column {
+.arch-block {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+}
+
+.arch-icon {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-cyan);
+    margin-bottom: 0.75rem;
+}
+.arch-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.arch-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.4rem;
+}
+
+.arch-desc {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+}
+
+/* ABIS Columns (System vs Personal) */
+.abis-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2.25rem;
+}
+
+.abis-card {
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-lg);
-    padding: 1.85rem;
+    padding: 2rem;
 }
 
-.case-study-column.highlight-column {
+.abis-card.highlight-card {
     background: rgba(59, 130, 246, 0.04);
     border-color: rgba(59, 130, 246, 0.3);
 }
 
-.column-heading {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--text-main);
-    margin-bottom: 1rem;
+.card-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 0.5rem;
 }
 
-.heading-icon {
-    width: 1.35rem;
-    height: 1.35rem;
+.card-kicker.highlight-kicker {
     color: var(--color-cyan);
 }
 
-.column-desc {
-    font-size: 0.9375rem;
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.85rem;
+}
+
+.card-intro {
+    font-size: 0.92rem;
     color: var(--text-muted);
     line-height: 1.65;
     margin-bottom: 1.25rem;
 }
 
-.bullet-list {
+.clean-bullet-list {
     display: flex;
     flex-direction: column;
     gap: 0.85rem;
 }
 
-.bullet-list li {
-    font-size: 0.9rem;
+.clean-bullet-list li {
+    font-size: 0.89rem;
     color: var(--text-muted);
     line-height: 1.6;
     position: relative;
     padding-left: 1.3rem;
 }
 
-.bullet-list li::before {
+.clean-bullet-list li::before {
     content: '→';
     position: absolute;
     left: 0;
@@ -710,12 +803,12 @@ code {
     font-family: var(--font-mono);
 }
 
-.bullet-list li strong {
+.clean-bullet-list li strong {
     color: var(--text-main);
     font-weight: 600;
 }
 
-.case-study-footer {
+.abis-tech-bar {
     display: flex;
     align-items: center;
     gap: 1.25rem;
@@ -724,20 +817,20 @@ code {
     flex-wrap: wrap;
 }
 
-.tech-tags-label {
+.tech-bar-label {
     font-size: 0.8125rem;
     font-family: var(--font-mono);
     color: var(--text-faint);
     text-transform: uppercase;
 }
 
-.tech-tags {
+.tech-bar-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
 }
 
-.tag {
+.tech-bar-tags span {
     font-size: 0.8rem;
     font-family: var(--font-mono);
     background: rgba(255, 255, 255, 0.05);
@@ -801,7 +894,7 @@ code {
     justify-content: space-between;
     align-items: flex-start;
     gap: 1.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.85rem;
     flex-wrap: wrap;
 }
 
@@ -846,13 +939,17 @@ code {
     color: var(--text-faint);
 }
 
-.timeline-summary {
-    font-size: 0.9375rem;
+.timeline-client {
+    font-size: 0.9rem;
     color: var(--text-muted);
     margin-bottom: 1.15rem;
-    line-height: 1.6;
+    line-height: 1.55;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.5rem 0.85rem;
+    border-radius: var(--radius-sm);
+    border-left: 2px solid var(--color-cyan);
 }
-.timeline-summary strong {
+.timeline-client strong {
     color: var(--text-main);
 }
 
@@ -983,6 +1080,7 @@ code {
     border-radius: var(--radius-sm);
     color: var(--text-muted);
     transition: all 0.2s ease;
+    min-height: 36px;
 }
 .icon-btn:hover {
     color: #ffffff;
@@ -1329,11 +1427,15 @@ code {
         grid-template-columns: repeat(2, 1fr);
     }
 
+    .architecture-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .contact-links-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .case-study-body {
+    .abis-columns {
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }
@@ -1382,7 +1484,8 @@ code {
 
     .projects-grid,
     .skills-grid,
-    .two-column-grid {
+    .two-column-grid,
+    .architecture-grid {
         grid-template-columns: 1fr;
     }
 
@@ -1390,20 +1493,20 @@ code {
         grid-template-columns: 1fr;
     }
 
-    .case-study-banner {
+    .abis-container {
         padding: 1.75rem;
     }
 
-    .case-study-header {
+    .abis-header {
         flex-direction: column;
     }
 
-    .case-study-badge {
+    .abis-throughput-card {
         text-align: left;
     }
 
     .contact-box {
-        padding: 2rem 1.5rem;
+        padding: 2rem 1.25rem;
     }
 
     .contact-links-grid {
@@ -1418,5 +1521,36 @@ code {
     }
     .timeline-card {
         padding: 1.5rem;
+    }
+}
+
+/* Extra small mobile adjustments (320px–375px) */
+@media (max-width: 375px) {
+    .wrap {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .hero-title {
+        font-size: 2.1rem;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .hero-cta-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 }
