@@ -1,65 +1,74 @@
-/*=============== SHOW MENU ===============*/
-const navMenu = document.getElementById('nav-menu'),
-      navToggle = document.getElementById('nav-toggle'),
-      navClose = document.getElementById('nav-close')
+/**
+ * ATIQ UR REHMAN PORTFOLIO — INTERACTIVE LOGIC
+ * Lightweight, zero-dependency, accessible vanilla JavaScript
+ */
 
-if(navToggle){
-    navToggle.addEventListener('click', () =>{
-        navMenu.classList.add('show-menu')
-    })
-}
+document.addEventListener('DOMContentLoaded', () => {
+    // --- Mobile Menu Toggle ---
+    const navToggle = document.getElementById('nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    const navLinks = document.querySelectorAll('.nav-link');
 
-if(navClose){
-    navClose.addEventListener('click', () =>{
-        navMenu.classList.remove('show-menu')
-    })
-}
+    if (navToggle && navMenu) {
+        navToggle.addEventListener('click', () => {
+            const isOpen = navMenu.classList.toggle('nav-open');
+            navToggle.setAttribute('aria-expanded', isOpen.toString());
+        });
 
-/*=============== REMOVE MENU MOBILE ===============*/
-const navLink = document.querySelectorAll('.nav__link')
+        // Close menu when clicking a link
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (navMenu.classList.contains('nav-open')) {
+                    navMenu.classList.remove('nav-open');
+                    navToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
 
-const linkAction = () =>{
-    const navMenu = document.getElementById('nav-menu')
-    navMenu.classList.remove('show-menu')
-}
-navLink.forEach(n => n.addEventListener('click', linkAction))
-
-/*=============== SCROLL SECTIONS ACTIVE LINK ===============*/
-const sections = document.querySelectorAll('section[id]')
-    
-const scrollActive = () =>{
-  	const scrollY = window.pageYOffset
-
-	sections.forEach(current =>{
-		const sectionHeight = current.offsetHeight,
-			  sectionTop = current.offsetTop - 58,
-			  sectionId = current.getAttribute('id'),
-			  sectionsClass = document.querySelector('.nav__menu a[href*=' + sectionId + ']')
-
-		if(scrollY > sectionTop && scrollY <= sectionTop + sectionHeight){
-			sectionsClass.classList.add('active-link')
-		}else{
-			sectionsClass.classList.remove('active-link')
-		}                                                    
-	})
-}
-window.addEventListener('scroll', scrollActive)
-
-/*=============== SCROLL REVEAL ANIMATION ===============*/
-function reveal() {
-    var reveals = document.querySelectorAll(".reveal");
-  
-    for (var i = 0; i < reveals.length; i++) {
-      var windowHeight = window.innerHeight;
-      var elementTop = reveals[i].getBoundingClientRect().top;
-      var elementVisible = 100;
-  
-      if (elementTop < windowHeight - elementVisible) {
-        reveals[i].classList.add("active");
-      }
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navMenu.contains(e.target) && !navToggle.contains(e.target) && navMenu.classList.contains('nav-open')) {
+                navMenu.classList.remove('nav-open');
+                navToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
     }
-  }
-  
-  window.addEventListener("scroll", reveal);
-  // Trigger once on load
-  reveal();
+
+    // --- Active Link Highlighting On Scroll ---
+    const sections = document.querySelectorAll('section[id]');
+
+    function highlightNavOnScroll() {
+        const scrollY = window.pageYOffset;
+        const headerHeight = document.getElementById('site-header')?.offsetHeight || 70;
+
+        sections.forEach(current => {
+            const sectionHeight = current.offsetHeight;
+            const sectionTop = current.offsetTop - headerHeight - 30;
+            const sectionId = current.getAttribute('id');
+            const correspondingLink = document.querySelector(`.nav-link[href*="${sectionId}"]`);
+
+            if (correspondingLink) {
+                if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+                    correspondingLink.classList.add('active');
+                } else {
+                    correspondingLink.classList.remove('active');
+                }
+            }
+        });
+    }
+
+    window.addEventListener('scroll', highlightNavOnScroll, { passive: true });
+    highlightNavOnScroll(); // Trigger on initial load
+
+    // --- Header Shadow on Scroll ---
+    const header = document.getElementById('site-header');
+    function checkHeaderScroll() {
+        if (window.scrollY > 20) {
+            header?.classList.add('scrolled');
+        } else {
+            header?.classList.remove('scrolled');
+        }
+    }
+    window.addEventListener('scroll', checkHeaderScroll, { passive: true });
+    checkHeaderScroll();
+});
