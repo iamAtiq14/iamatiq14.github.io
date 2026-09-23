@@ -1512,7 +1512,8 @@ code {
     color: var(--text-faint);
 }
 
-.contact-card-val {
+.contact-card-val,
+.contact-card-value {
     font-size: 0.84rem;
     font-weight: 600;
     color: var(--text-main);
