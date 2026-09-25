@@ -1385,7 +1385,7 @@ code {
 
 .contact-links-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 0.85rem;
     margin-bottom: 2rem;
 }
@@ -1511,7 +1511,7 @@ code {
     }
 
     .contact-links-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
 
     .abis-columns {
@@ -1594,7 +1594,7 @@ code {
     }
 
     .contact-links-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .timeline {
@@ -1605,6 +1605,12 @@ code {
     }
     .timeline-card {
         padding: 1.35rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-links-grid {
+        grid-template-columns: 1fr;
     }
 }
 
